@@ -59,11 +59,10 @@
         :elevation="10"
         style="
           min-height: 70%;
-          max-height: 90%;
+          max-height: 100%;
           padding: 20px;
           background-color: bisque;
-          margin-right: 10px;
-          margin-top: 10px;
+          margin-top: 5vh;
           padding-bottom: 20px;
         "
       >

@@ -8,8 +8,8 @@ custom:
     number: 3
   myStage: ${opt:stage, 'local'}
   site:
-    bucketName: crypto-manager-${self:custom.myStage}-ns-ui-static
-    uiDeploymentBucket: crypto-manager-${self:custom.myStage}-nws-ui-static
+    bucketName: crypto-manager-${self:custom.myStage}
+    uiDeploymentBucket: crypto-manager-${self:custom.myStage}
 
   # serverless-s3-sync
   s3Sync:

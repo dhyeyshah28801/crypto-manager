@@ -2,9 +2,15 @@
   <v-navigation-drawer expand-on-hover rail :rail-width="75">
     <template v-slot:prepend>
       <v-toolbar color="primary" :elevation="5">
-        <div style="width: 100%" class="d-flex justify-space-between">
-          <router-link class="ml-3" to="/">
-            <v-img :src="require('@/assets/images/logo.png')" width="50px" />
+        <div
+          style="width: 100%"
+          class="d-flex justify-center align-center ma-2"
+        >
+          <router-link to="/">
+            <v-img
+              :src="'https://cryptologos.cc/logos/bitcoin-btc-logo.png?v=035'"
+              width="50px"
+            />
           </router-link>
         </div>
       </v-toolbar>

@@ -36,7 +36,7 @@
             </v-container>
           </v-row>
           <!-- Text Fields -->
-          <v-card elevation="0" class="rounded-xl mt-5" color="#8CFFEC">
+          <v-card elevation="0" class="rounded-xl mt-5" color="#B1B6D3">
             <v-row class="mx-2 mt-5">
               <v-text-field
                 rounded
