@@ -1,20 +1,26 @@
-import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
+import { createRouter, createWebHistory, RouteLocation, RouteRecordRaw } from "vue-router";
 import HomeView from "../views/HomeView.vue";
+import LoginView from "@/views/LoginView.vue";
+import { useSessionStore } from "@/stores/sessionState";
 
 const routes: Array<RouteRecordRaw> = [
   {
     path: "/",
-    name: "home",
-    component: HomeView,
+    name: "login",
+    component: LoginView,
   },
   {
-    path: "/about",
-    name: "about",
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
+    path: "/home",
+    name: "home",
+    beforeEnter: validateAuth,
+    component: HomeView,
+  },
+  
+  {
+    path: "/user",
+    name: "users",
     component: () =>
-      import(/* webpackChunkName: "about" */ "../views/AboutView.vue"),
+      import(/* webpackChunkName: "about" */ "../views/UserView.vue"),
   },
 ];
 
@@ -22,5 +28,13 @@ const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes,
 });
+
+async function validateAuth(
+  to : RouteLocation,
+  from: RouteLocation,
+  next: () => void
+){
+  useSessionStore().user ? next() : router.replace(from.path)
+}
 
 export default router;

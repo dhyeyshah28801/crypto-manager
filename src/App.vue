@@ -1,22 +1,30 @@
 <template>
-  <nav>
-    <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link>
-  </nav>
-  <router-view />
+  <v-app>
+    <side-bar v-if="sessionStore.user" />
+    <tool-bar v-if="sessionStore.user" />
+    <router-view id="pageContent" />
+  </v-app>
 </template>
 
+<script setup lang="ts">
+import SideBar from "./components/global/SideBar.vue";
+import ToolBar from "./components/global/ToolBar.vue";
+import { useSessionStore } from "./stores/sessionState";
+
+const sessionStore = useSessionStore();
+</script>
 <style>
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
+  margin-left: 75px;
   color: #2c3e50;
 }
-
-nav {
-  padding: 30px;
+.v-data-table-header__content {
+  font-weight: bolder;
+  font-size: 16px;
 }
 
 nav a {

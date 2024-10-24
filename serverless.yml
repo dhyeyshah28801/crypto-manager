@@ -1,0 +1,89 @@
+service: crypto-manager-ui
+
+custom:
+  prefix: crypto-manager
+  region: eu-west-1
+  prune:
+    automatic: true
+    number: 3
+  myStage: ${opt:stage, 'local'}
+  site:
+    bucketName: crypto-manager-${self:custom.myStage}-ns-ui-static
+    uiDeploymentBucket: crypto-manager-${self:custom.myStage}-nws-ui-static
+
+  # serverless-s3-sync
+  s3Sync:
+    - bucketName: ${self:custom.site.uiDeploymentBucket}
+      localDir: dist
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  memorySize: 128
+  timeout: 15
+  region: ${self:custom.region}
+  stage: ${self:custom.myStage}
+  deploymentBucket:
+    name: ${self:custom.prefix}-${self:custom.myStage}-deployments
+    maxPreviousDeploymentArtifacts: 3
+  stackTags:
+    Owner: Dhyey Shah
+    Project: Crypto Manager
+    Managed_by: serverless
+    Environment: ${self:custom.tags.environment.${self:custom.myStage}}
+
+plugins:
+  - serverless-s3-sync
+  - serverless-plugin-resource-tagging
+  - serverless-prune-plugin
+
+package:
+  exclude:
+    - dist/**
+    - coverage/**
+    - scripts/**
+    - serverless.yml
+    - .nyc_output/**
+    - .idea/**
+    - test/**
+    - scripts/**
+    - package-lock.json
+    - .github/**
+    - README.md
+
+resources:
+  Resources:
+    NsStaticSite:
+      Type: AWS::S3::Bucket
+      Properties:
+        BucketName: ${self:custom.site.bucketName}
+        OwnershipControls:
+          Rules:
+            - ObjectOwnership: ObjectWriter
+        PublicAccessBlockConfiguration:
+          BlockPublicAcls: false
+          BlockPublicPolicy: false
+          IgnorePublicAcls: false
+          RestrictPublicBuckets: false
+        WebsiteConfiguration:
+          ErrorDocument: index.html
+          IndexDocument: index.html
+
+    # specifying the policies to make sure all files inside the Bucket are avaialble
+    NsWebAppS3BucketPolicy:
+      DependsOn:
+        - NsStaticSite
+      Type: AWS::S3::BucketPolicy
+      Properties:
+        Bucket: !Ref NsStaticSite
+        PolicyDocument:
+          Statement:
+            - Sid: PublicReadGetObject
+              Effect: Allow
+              Principal: "*"
+              Action:
+                - s3:GetObject
+                - s3:ListBucket
+              Resource:
+                - arn:aws:s3:::${self:custom.site.bucketName}/*
+                - arn:aws:s3:::${self:custom.site.bucketName}
