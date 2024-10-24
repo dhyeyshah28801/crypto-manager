@@ -1,5 +1,6 @@
 <template>
   <v-row style="max-height: 70dvh">
+    <!-- CryptoCurrency Table -->
     <v-col :cols="8">
       <v-text class="text-h3"> Cryptocurrency Prices Today </v-text>
       <v-data-table-server
@@ -16,6 +17,7 @@
         :items-per-page-options="itemsPerPageOptions"
         @update:options="updatePagination"
       >
+        <!-- Refactored Columns -->
         <template v-slot:[`item.name`]="{ item }">
           <v-col>
             <v-img :src="item.image_url" alt="logo" height="50px"></v-img>
@@ -51,6 +53,7 @@
         </template>
       </v-data-table-server>
     </v-col>
+    <!-- Portfolio Details -->
     <v-col :cols="4">
       <v-card
         :elevation="10"
@@ -64,6 +67,7 @@
           padding-bottom: 20px;
         "
       >
+        <!-- Heading and Chart Area -->
         <v-row style="min-height: 90%">
           <v-col>
             <v-row>
@@ -83,6 +87,8 @@
             </v-row>
           </v-col>
         </v-row>
+
+        <!-- Portfolio Table Using Component -->
         <v-row class="mt-5">
           <UserPortfolioTable></UserPortfolioTable>
         </v-row>
@@ -104,8 +110,10 @@ import { Doughnut } from "vue-chartjs";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
+//Store Initializations
 const sessionStore = useSessionStore();
 
+// Table Variables
 let cryptoData: Ref<Array<Crypto>> = ref([]);
 let totalItemLengthCount = ref(0);
 const tableHeaders: Array<object> = [
@@ -161,6 +169,7 @@ const tableHeaders: Array<object> = [
 const itemsPerPageOptions = constants.TABLE_FOOTER_ITEMS_PER_PAGE_OPTIONS;
 let itemPerPageVar = ref(10);
 
+// Chart Variables
 const data = {
   labels: ["Bitcoin", "Ethereum", "Tether", "BNB"],
   datasets: [
@@ -175,6 +184,7 @@ const options = {
   maintainAspectRatio: false,
 };
 
+//Functions
 tryOnBeforeMount(async () => {
   cryptoData.value = await fetchCryptos();
 });

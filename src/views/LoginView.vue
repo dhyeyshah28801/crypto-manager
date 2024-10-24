@@ -18,12 +18,14 @@
       style="background-color: white"
       class="d-flex align-center justify-center"
     >
+      <!-- Login Panel -->
       <v-card
         :elevation="7"
         class="d-flex align-center justify-center pa-3 rounded-xl"
         min-height="400"
         min-width="90%"
       >
+        <!-- Bitcoin Logo  -->
         <v-col>
           <v-row style="text-align: center">
             <v-container min-height="100%">
@@ -33,6 +35,7 @@
               ></v-img>
             </v-container>
           </v-row>
+          <!-- Text Fields -->
           <v-card elevation="0" class="rounded-xl mt-5" color="#8CFFEC">
             <v-row class="mx-2 mt-5">
               <v-text-field
@@ -51,25 +54,15 @@
               ></v-text-field>
             </v-row>
           </v-card>
+
+          <!-- Login Button -->
           <v-btn
             rounded
             min-height="60px"
             variant="elevated"
             class="loginBtn"
             color="blue"
-            v-on:click="
-              () => {
-                router.push('/home');
-                // Here we would make the API call to check username and password and
-                // The backend would send user data and JWT token with expiry
-                sessionStore.user = {
-                  firstName: 'Dhyey',
-                  lastName: 'Shah',
-                  email: 'dxs240020@utdallas.edu',
-                  userRoleId: 2,
-                };
-              }
-            "
+            v-on:click="login()"
           >
             Login
           </v-btn>
@@ -79,23 +72,7 @@
     <div
       class="position-absolute top-0 right-0 bg-primary rounded-lg pa-3 mr-5 mt-9"
     >
-      <v-btn
-        v-on:click="
-          () => {
-            router.push('/home');
-            // Here we would make the API call to check username and password and
-            // The backend would send user data and JWT token with expiry
-            sessionStore.user = {
-              firstName: 'Dhyey',
-              lastName: 'Shah',
-              email: 'dxs240020@utdallas.edu',
-              userRoleId: 1,
-            };
-          }
-        "
-      >
-        Login As Admin</v-btn
-      >
+      <v-btn v-on:click="login(true)"> Login As Admin</v-btn>
     </div>
   </v-row>
 </template>
@@ -109,6 +86,18 @@ const sessionStore = useSessionStore();
 tryOnMounted(() => {
   sessionStore.user = undefined;
 });
+
+const login = async (isAdmin?: boolean) => {
+  router.push("/home");
+  // Here we would make the API call to check username and password and
+  // The backend would send user data and JWT token with expiry
+  sessionStore.user = {
+    firstName: "Dhyey",
+    lastName: "Shah",
+    email: "dxs240020@utdallas.edu",
+    userRoleId: isAdmin ? 1 : 2,
+  };
+};
 </script>
 <style lang="css">
 .text-h3 {

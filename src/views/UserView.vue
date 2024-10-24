@@ -1,4 +1,5 @@
 <template>
+  <!-- Component to set Filter, Search and Add User  -->
   <TablePageHeaders :title="'User Management'">
     <template v-slot:search>
       <v-text-field
@@ -9,11 +10,7 @@
         variant="solo"
         hide-details
         single-line
-        @click:append-inner="
-          () => {
-            fetchUsers();
-          }
-        "
+        @click:append-inner="fetchUsers()"
       ></v-text-field>
     </template>
 
@@ -24,11 +21,7 @@
         variant="solo"
         v-model="userRoleVar"
         class="mx-5"
-        @update:model-value="
-          () => {
-            fetchUsers();
-          }
-        "
+        @update:model-value="fetchUsers()"
       ></v-select>
 
       <v-select
@@ -37,11 +30,7 @@
         variant="solo"
         v-model="userStatusVar"
         class="mx-5"
-        @update:model-value="
-          () => {
-            fetchUsers();
-          }
-        "
+        @update:model-value="fetchUsers()"
       >
       </v-select>
       <v-dialog width="500">
@@ -118,6 +107,7 @@
     </template>
   </TablePageHeaders>
 
+  <!-- Table -->
   <v-data-table-server
     v-model:items-per-page="itemPerPageVar"
     :headers="tableHeaders"
@@ -128,6 +118,7 @@
     :items-per-page-options="itemsPerPageOptions"
     @update:options="updatePagination"
   >
+    <!-- Refactored Columns -->
     <template v-slot:[`item.status`]="{ item }">
       <span>
         {{ item.status === 1 ? "Active" : "Inactive" }}
@@ -139,6 +130,7 @@
         {{ item.userRoleId === 1 ? "Admin" : "User" }}
       </span>
     </template>
+    <!-- TODO: Here we add action buttons to edit and delete user -->
   </v-data-table-server>
 </template>
 
@@ -155,13 +147,16 @@ import {
 import { tryOnBeforeMount } from "@vueuse/core";
 import { Ref, ref } from "vue";
 
+// Filter Values
 let statusNameArray = ["All", "Active", "Inactive"];
 let roleNameArray = ["All", "Admin", "User"];
 
+// Filter Initial Values
 let userNameSearchString = ref("");
 let userRoleVar = ref("All");
 let userStatusVar = ref("All");
 
+// Table Variables
 let userData: Ref<Array<User>> = ref([]);
 let totalItemLengthCount = ref(0);
 const tableHeaders: Array<object> = [
@@ -169,10 +164,12 @@ const tableHeaders: Array<object> = [
   { title: "Email", key: "email", sortable: false, align: "center" },
   { title: "User Role", key: "userRoleId", sortable: false, align: "center" },
   { title: "Status", key: "status", sortable: false, align: "center" },
+  // TODO: Add Column for Action Buttons
 ];
 const itemsPerPageOptions = constants.TABLE_FOOTER_ITEMS_PER_PAGE_OPTIONS;
 let itemPerPageVar = ref(5);
 
+// Dialog Variables (Activators, Functions and Rules)
 let isUserValid = ref(false);
 const isDialogOpen = ref(false);
 const closeDialog = () => {
@@ -190,6 +187,8 @@ const userEmailRules = [
     /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,4})+$/.test(v) ||
     "E-mail must be valid",
 ];
+
+// Functions
 tryOnBeforeMount(() => {
   fetchUsers();
 });
@@ -209,6 +208,7 @@ function fetchUsers(data?: any) {
   totalItemLengthCount.value = userData.value.length;
   if (data) {
     const { itemsPerPage, page, sortBy } = data;
+    // Here we manually paginate data whereas we would receive paginated data from the backend itself
     userData.value = userData.value.slice(
       (page - 1) * itemsPerPage,
       (page - 1) * itemsPerPage + itemsPerPage,
