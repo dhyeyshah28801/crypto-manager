@@ -3,6 +3,7 @@
     hide-default-footer
     :headers="headers"
     :items="pfData"
+    height="30%"
     item-value="name"
     @update:options="fetchData()"
     class="border-xl"

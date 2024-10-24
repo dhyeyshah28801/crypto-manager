@@ -1,93 +1,94 @@
 <template>
-  <v-container max-height="90dvh">
-    <v-row>
-      <v-col :cols="8">
-        <v-text class="text-h2"> Cryptocurrency Prices Today </v-text>
-        <v-data-table-server
-          class="mt-3"
-          v-model:items-per-page="itemPerPageVar"
-          :headers="tableHeaders"
-          :fixed-header="true"
-          height="75dvh"
-          :items="cryptoData"
-          :items-length="totalItemLengthCount"
-          :loading="false"
-          item-value="id"
-          :items-per-page-options="itemsPerPageOptions"
-          @update:options="updatePagination"
-        >
-          <template v-slot:[`item.name`]="{ item }">
-            <v-col>
-              <v-img :src="item.image_url" alt="logo" height="50px"></v-img>
+  <v-row style="max-height: 70dvh">
+    <v-col :cols="8">
+      <v-text class="text-h3"> Cryptocurrency Prices Today </v-text>
+      <v-data-table-server
+        class="mt-3"
+        v-model:items-per-page="itemPerPageVar"
+        :headers="tableHeaders"
+        :fixed-header="true"
+        height="70dvh"
+        density="compact"
+        :items="cryptoData"
+        :items-length="totalItemLengthCount"
+        :loading="false"
+        item-value="id"
+        :items-per-page-options="itemsPerPageOptions"
+        @update:options="updatePagination"
+      >
+        <template v-slot:[`item.name`]="{ item }">
+          <v-col>
+            <v-img :src="item.image_url" alt="logo" height="50px"></v-img>
 
-              <span>
-                {{ item.name }}
-              </span>
-            </v-col>
-          </template>
+            <span>
+              {{ item.name }}
+            </span>
+          </v-col>
+        </template>
 
-          <template v-slot:[`item.percent_change_24h`]="{ item }">
-            <v-chip
-              :color="item.percent_change_24h.startsWith('+') ? 'green' : 'red'"
-            >
-              {{ item.percent_change_24h }}
-            </v-chip>
-          </template>
+        <template v-slot:[`item.percent_change_24h`]="{ item }">
+          <v-chip
+            :color="item.percent_change_24h.startsWith('+') ? 'green' : 'red'"
+          >
+            {{ item.percent_change_24h }}
+          </v-chip>
+        </template>
 
-          <template v-slot:[`item.percent_change_7d`]="{ item }">
-            <v-chip
-              :color="item.percent_change_7d.startsWith('+') ? 'green' : 'red'"
-            >
-              {{ item.percent_change_7d }}
-            </v-chip>
-          </template>
+        <template v-slot:[`item.percent_change_7d`]="{ item }">
+          <v-chip
+            :color="item.percent_change_7d.startsWith('+') ? 'green' : 'red'"
+          >
+            {{ item.percent_change_7d }}
+          </v-chip>
+        </template>
 
-          <template v-slot:[`item.percent_change_30d`]="{ item }">
-            <v-chip
-              :color="item.percent_change_30d.startsWith('+') ? 'green' : 'red'"
-            >
-              {{ item.percent_change_30d }}
-            </v-chip>
-          </template>
-        </v-data-table-server>
-      </v-col>
-      <v-col :cols="4">
-        <v-card
-          :elevation="10"
-          style="
-            min-height: 90%;
-            padding: 20px;
-            background-color: bisque;
-            margin-right: 10px;
-            margin-top: 10px;
-          "
-        >
-          <v-row style="min-height: 50%">
-            <v-col>
-              <v-row>
-                <v-text style="width: 100%" class="mt-7 my-3 text-h4">
-                  {{
-                    sessionStore.user?.userRoleId === constants.ADMIN
-                      ? "General"
-                      : "User"
-                  }}
-                  Portfolio
-                </v-text>
-              </v-row>
-              <v-row>
-                <div style="width: 100%">
-                  <Doughnut :data="data" :options="options" />
-                </div>
-              </v-row>
-            </v-col>
-          </v-row>
-          <v-row class="mt-10">
-            <UserPortfolioTable></UserPortfolioTable>
-          </v-row>
-        </v-card>
-      </v-col>
-    </v-row>
-  </v-container>
+        <template v-slot:[`item.percent_change_30d`]="{ item }">
+          <v-chip
+            :color="item.percent_change_30d.startsWith('+') ? 'green' : 'red'"
+          >
+            {{ item.percent_change_30d }}
+          </v-chip>
+        </template>
+      </v-data-table-server>
+    </v-col>
+    <v-col :cols="4">
+      <v-card
+        :elevation="10"
+        style="
+          min-height: 70%;
+          max-height: 90%;
+          padding: 20px;
+          background-color: bisque;
+          margin-right: 10px;
+          margin-top: 10px;
+          padding-bottom: 20px;
+        "
+      >
+        <v-row style="min-height: 90%">
+          <v-col>
+            <v-row>
+              <v-text style="width: 100%" class="mt-2 my-3 text-h5">
+                {{
+                  sessionStore.user?.userRoleId === constants.ADMIN
+                    ? "General"
+                    : "User"
+                }}
+                Portfolio
+              </v-text>
+            </v-row>
+            <v-row>
+              <div style="width: 100%; height: 10pc">
+                <Doughnut :data="data" :options="options" />
+              </div>
+            </v-row>
+          </v-col>
+        </v-row>
+        <v-row class="mt-5">
+          <UserPortfolioTable></UserPortfolioTable>
+        </v-row>
+      </v-card>
+    </v-col>
+  </v-row>
 </template>
 
 <script setup lang="ts">
