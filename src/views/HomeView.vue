@@ -3,55 +3,66 @@
     <!-- CryptoCurrency Table -->
     <v-col :cols="8">
       <v-text class="text-h3"> Cryptocurrency Prices Today </v-text>
-      <v-data-table-server
-        class="mt-3"
-        v-model:items-per-page="itemPerPageVar"
-        :headers="tableHeaders"
-        :fixed-header="true"
-        height="70dvh"
-        density="compact"
-        :items="cryptoData"
-        :items-length="totalItemLengthCount"
-        :loading="false"
-        item-value="id"
-        :items-per-page-options="itemsPerPageOptions"
-        @update:options="updatePagination"
+      <v-card
+        :elevation="10"
+        style="
+          min-height: 90%;
+          max-height: 100%;
+          padding: 5px;
+          background-color: white;
+          margin-top: 2dvh;
+        "
       >
-        <!-- Refactored Columns -->
-        <template v-slot:[`item.name`]="{ item }">
-          <v-col>
-            <v-img :src="item.image_url" alt="logo" height="50px"></v-img>
+        <v-data-table-server
+          class="mt-3"
+          v-model:items-per-page="itemPerPageVar"
+          :headers="tableHeaders"
+          :fixed-header="true"
+          height="70dvh"
+          density="compact"
+          :items="cryptoData"
+          :items-length="totalItemLengthCount"
+          :loading="false"
+          item-value="id"
+          :items-per-page-options="itemsPerPageOptions"
+          @update:options="updatePagination"
+        >
+          <!-- Refactored Columns -->
+          <template v-slot:[`item.name`]="{ item }">
+            <v-col>
+              <v-img :src="item.image_url" alt="logo" height="50px"></v-img>
 
-            <span>
-              {{ item.name }}
-            </span>
-          </v-col>
-        </template>
+              <span>
+                {{ item.name }}
+              </span>
+            </v-col>
+          </template>
 
-        <template v-slot:[`item.percent_change_24h`]="{ item }">
-          <v-chip
-            :color="item.percent_change_24h.startsWith('+') ? 'green' : 'red'"
-          >
-            {{ item.percent_change_24h }}
-          </v-chip>
-        </template>
+          <template v-slot:[`item.percent_change_24h`]="{ item }">
+            <v-chip
+              :color="item.percent_change_24h.startsWith('+') ? 'green' : 'red'"
+            >
+              {{ item.percent_change_24h }}
+            </v-chip>
+          </template>
 
-        <template v-slot:[`item.percent_change_7d`]="{ item }">
-          <v-chip
-            :color="item.percent_change_7d.startsWith('+') ? 'green' : 'red'"
-          >
-            {{ item.percent_change_7d }}
-          </v-chip>
-        </template>
+          <template v-slot:[`item.percent_change_7d`]="{ item }">
+            <v-chip
+              :color="item.percent_change_7d.startsWith('+') ? 'green' : 'red'"
+            >
+              {{ item.percent_change_7d }}
+            </v-chip>
+          </template>
 
-        <template v-slot:[`item.percent_change_30d`]="{ item }">
-          <v-chip
-            :color="item.percent_change_30d.startsWith('+') ? 'green' : 'red'"
-          >
-            {{ item.percent_change_30d }}
-          </v-chip>
-        </template>
-      </v-data-table-server>
+          <template v-slot:[`item.percent_change_30d`]="{ item }">
+            <v-chip
+              :color="item.percent_change_30d.startsWith('+') ? 'green' : 'red'"
+            >
+              {{ item.percent_change_30d }}
+            </v-chip>
+          </template>
+        </v-data-table-server>
+      </v-card>
     </v-col>
     <!-- Portfolio Details -->
     <v-col :cols="4">
@@ -59,10 +70,10 @@
         :elevation="10"
         style="
           min-height: 70%;
-          max-height: 100%;
+          max-height: 90%;
           padding: 20px;
           background-color: bisque;
-          margin-top: 5vh;
+          margin-top: 10dvh;
           padding-bottom: 20px;
         "
       >
@@ -70,7 +81,7 @@
         <v-row style="min-height: 90%">
           <v-col>
             <v-row>
-              <v-text style="width: 100%" class="mt-2 my-3 text-h5">
+              <v-text style="width: 100%" class="mt-2 my-3 text-h4">
                 {{
                   sessionStore.user?.userRoleId === constants.ADMIN
                     ? "General"

@@ -1,8 +1,10 @@
 <template>
   <v-app>
     <side-bar v-if="sessionStore.user" />
-    <tool-bar v-if="sessionStore.user" />
-    <router-view id="pageContent" />
+    <tool-bar v-if="sessionStore.user" class="top-0" />
+    <v-container style="height: 40px; padding: 0">
+      <router-view id="pageContent" />
+    </v-container>
   </v-app>
 </template>
 

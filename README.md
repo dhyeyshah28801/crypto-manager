@@ -38,6 +38,10 @@ To host this website we use a S3 Bucket and allow public access.
 
 For distribution of the website we will use CloudFront CDN. To sync the Vue App and upload it to S3 Bucket we use the S3-Sync Plugin along with cloudfront invalidate plugin to frequently update the cached content so latest changes reaches the users effectively.
 
+## Conventional Commits
+
+To maintain proper and prettier commit history, conventional commits are used to specify the type and scope of the commits.
+
 ## Test and Deploy
 
 To locally deploy the project use the yarn script

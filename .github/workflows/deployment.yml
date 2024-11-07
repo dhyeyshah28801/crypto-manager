@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - main
-  pull_request:
 
 jobs:
   pre-build:
@@ -55,7 +54,6 @@ jobs:
 
       - name: Build Project
         run: |
-          export NODE_ENV=production
           chmod +x ./scripts/setAWSEnvironment.sh
           ./scripts/setAWSEnvironment.sh
           if [[ "${{ matrix.environment }}" == "test" ]]; then
